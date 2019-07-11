@@ -1,0 +1,237 @@
+EasyPopulate 4 für Zen Cart 1.5.6 deutsch
+
+Version 4.0.38.1 vom 11.07.2019
+
+Easy Populate 4 ermöglicht den Export/Import von Artikeln in einen Zen Cart Shop und kann auch für das Massenupdate von z.B. Preisen genutzt werden.
+Die Funktionalität wurde gegenüber früheren Easy Populate Versionen stark erweitert und verbessert.
+
+Vor dem Einsatz von Easy Populate 4 die Hinweise und Tipps in dieser liesmich.txt genau lesen!
+Detailliertes Changelog in der Datei changelog.txt
+
+
+UPDATE VON ÄLTEREN EASY POPULATE 4 Versionen:
+
+Rufen Sie zuerst in Ihrer Shopadministration Konfiguration > Easy Populate 4 auf und notieren Sie sich Ihre derzeitigen Konfigurationseinstellungen
+Rufen Sie dann in Ihrer Shopadministration Tools > Easy Populate 4 auf und clicken Sie auf den Link Easy Populate deinstallieren.
+Dann erst die neuen Dateien dieses Pakets gemäß Installationsanleitung hochladen
+
+
+NEUINSTALLATION:
+
+AUSSCHLIESSLICH ERST IN EINEM TESTSHOP VERWENDEN UM SICH MIT DER FUNKTIONSWEISE VERTRAUT ZU MACHEN!
+
+
+1)
+Im Ordner NEUE DATEIEN den Ordner DEINADMIN auf den Namen des Admin Verzeichnisses umbenennen
+
+2)
+Jetzt die Ordner/Dateien im Ordner NEUE DATEIEN in der vorgegebenen Struktur ins Zen-Cart Verzeichnis hochladen, dabei werden keine bestehenden Dateien überschrieben.
+Dem Ordner temp Schreibrechte geben (chmod 777) hier werden später die Exportdateien abgelegt.
+
+3)
+In die Zen-Cart Administration einloggen und auf irgendeinen Menüpunkt clicken
+
+4)
+Unter Tools ist nun der Menüpunkt Easy Populate 4
+Anclicken
+Oben erscheint nun:
+Easy Populate Konfigurationeinstellungen fehlen. Bitte installieren Sie die Easy Populate Einstellungen, indem Sie auf Install EP4 klicken.
+Anclicken und die Konfiguration wird installiert und ist danach unter Konfiguration > Easy Populate 4 vorhanden 
+
+5)
+Konfiguration an die eigenen Wünsche anpassen.
+Es wird empfohlen, den temp Ordner für die Exportdateien aus Sicherheitsgründen innerhalb des Adminverzeichnisses zu lassen (voreingestellt)
+Danach unter Tools > Easy Populate am besten mal einen Export "Alle Artikel mit Meta Tags" machen, um sich mit der Funktionsweise vertraut zu machen.
+
+6)
+Falls Sie beim Download der Exportdatei die Meldung bekommen: You don' t have permission to access beispiel.csv on this server, dann erweitern Sie den Eintrag in folgender .htaccess Datei:
+DEINADMIN/.htaccess
+Normalerweise sieht der so aus:
+<FilesMatch "(?i).*\.(php|js|css|html?|ico|otf|jpe?g|gif|webp|png|swf|flv|xml|xsl)$">
+ändern auf
+<FilesMatch "(?i).*\.(php|js|css|html?|ico|otf|jpe?g|gif|webp|png|swf|flv|xml|xsl|csv|CSV|txt|TXT)$">
+
+
+HINWEISE UND TIPPS ZUR VERWENDUNG
+
+Bevor Easy Populate 4 verwendet wird, sollten Sie bereits ein paar Kategorien und Artikel im Shop vollständig angelegt haben.
+Nur dann ist ein sinnvoller Export möglich und Sie können sich mit der Struktur der Exportdatei vertraut machen um Ihren Import gut vorbereiten zu können
+
+
+GRUNDLEGENDE DINGE
+
+1)
+Machen Sie vor jedem Import mit Easy Populate 4 IMMER eine Sicherung Ihrer Datenbank.
+Diese Version ist noch als Beta eingestuft, auch wenn sie sehr zuverlässig arbeitet.
+Selbst wenn es keine Beta wäre:
+Ein Import ändert Ihren Artikelbestand und sollte irgendetwas schief gehen oder Ihre Importdatei falsche Angaben enthalten, dann können Sie einfach Ihr zuvor angelegtes Backup einspielen und neu beginnen.
+
+2)
+Easy Populate 4 arbeitet ausschließlich mit csv Dateien! Kein xls oder txt, sondern nur csv.
+Zum Bearbeiten von csv Dateien nutzen Sie bitte ausschließlich Open Office.
+Excel ist aufgrund mangelnder Kompatibilität mit utf-8 und anderere Unzulänglichkeiten für csv Dateien NICHT geeignet.
+In Open Office stellen Sie beim Öffnen einer von Easy Populate generierten csv Datei folgendes ein:
+Kodierung: utf-8
+Feld Trennzeichen: Komma (,)
+Texttrenner: Anführungszeichen (")
+Nur dann erhalten Sie in der Vorschau eine Tabellenstruktur und nur dann wird Easy Populate 4 korrekt arbeiten
+Die Spalten am besten auf Format Text einstellen, damit z.B. nicht Daten oder Preise in irgendetwas anderes umgewandelt werden.
+Ändern Sie nicht die Bennenung der Spaltenüberschriften!
+
+3)
+Easy Populate arbeitet mit Ihren Artikelnummern und die müssen pro Artikel eindeutig sein!
+Jeder Ihrer Artikel MUSS eine eindeutige Artikelnummer haben. Einträge mit fehlender Artikelnummer werden bei einem Import nicht berücksichtigt.
+Ihre Artikelnummern sollten eindeutig sein, jeder Artikel hat eine eigene.
+Hätten zwei Artikel in Ihrer Liste dieselbe Artikelnummer, dann würde der spätere Eintrag in der Liste beim Import den früheren überschrieben.
+Einzige Ausnahme:
+Wenn bei 2 Artikeln mit gleicher Artikelnummer jeweils unterschiedliche Kategorienamen angegeben werden, dann ist das Importergebnis ein "verlinkter" Artikel in den beiden Kategorien.
+Echte Artikelduplikate mit gleichen Artikelnummern werden nicht unterstützt.
+Prüfen Sie Ihren Datenbestand auf doppelte Artikelnummern!
+
+4)
+Kategorienamen
+Easy Populate 4 arbeitet anders als frühere Easy Populate Versionen und verwendet für den Import/Zuordnung von Kategorien die Kategorienamen und nicht die Kategorie IDs
+Dadurch ist es möglich unterschiedliche Kategorienamen für die verschiedenen im Shop aktiven Sprachen zu hinterlegen, so dass wie bei den Artikelnamen und Artikelbeschreibungen ein vollständiger Multilanguage Import möglich ist.
+v_categories_name_43 ist also die Spalte für die Kategorienamen in deutsch
+v_categories_name_1 ist also die Spalte für die Kategorienamen in englisch
+
+Unterkategorien werden immer mit dem "Karat" Zeichen getrennt:
+^
+Haben Sie also eine Hauptkategorie namens Hardware und darunter eine Unterkategorie namens Drucker, dann wäre der Name der Kategorie Drucker so anzugeben:
+Hardware^Drucker
+
+Ist Ihr Shop auch in englisch, dann geben Sie im entsprechenden Feld an:
+Hardware^Printer
+
+Einde dritte Unterkategorie wäre z.B.
+Hardware^Drucker^Laserdrucker
+
+Sie sehen das am besten, wenn Sie einen Export Ihrere bereits angelegten Artikel machen
+
+Achten Sie auf die durchgehend gleiche Benennung der Kategorienamen.
+Groß und Klein Schreibung ist wichtig und wenn Sie Hardware^Drucker und Hardware^drucker oder Hardware^DRUCKER mischen würden, dann würden unterschiedliche Kategorien angelegt werden.
+
+
+5)
+Dateinamen der Export Dateien
+Ändern Sie nicht den Beginn der Dateinamen!
+Der Beginn der Dateinamen dient Easy Populate 4 als Kennung, um welchen Import es sich hier handeln soll.
+Ein Export aller Artikel liefert z.B. die Datei
+Full-EP2015Jan20-104348.csv
+Wenn Sie diese Datei dann bearbeiten zum späteren Import, dann lassen Sie das Full-EP am Anfang des Dateinamens unverändert!
+Was danach kommt können Sie ändern um die Datei für sich selbst besser zuordnen zu können aber der Dateiname für einen Komplettimport muss eben mit Full-EP beginnen
+Genau dasselbe gilt für die anderen Exportvarianten
+PriceBreaks-EP = Kennung für einen Staffelpreise Import
+CategoryMeta-EP = Kennung für Nur Kategorien mit Metatags Import
+Featured-EP = Kennung für Import der Empfohlenen Artikel
+SBA-Stock-EP = Kennung für einen Stock by Attributes Lagerbestand Import
+Attrib-Basic-EP = Kennung für einen Import der Attribute einfach
+Attrib-Detailed-EP = Kennung für einen Import der Attribute detailliert
+
+
+6)
+Konfiguration und Workflow
+Unter Konfiguration > Easy Populate 4 sind die verschiedenen Einstellungsmöglichkeiten erklärt.
+Easy Populate 4 erkennt automatisch ob Sie Ihre Produkt Tabelle durch einige bekannte Erweiterungen verändert haben und wird solche Felder dann automatisch mitberücksichtigen.
+Wenn Sie die Tabelle products mit eigenen benutzerdefinierten Feldern erweitert haben und diese für einen Export/Import nutzen wollen, dann tragen Sie die Namen dieser Felder kommagetrennt entsprechend ein.
+Auch diese Felder werden dann in die Exportdatei aufgenommen.
+
+Der Workflow ist bei Easy Populate anders als in früheren Easy Populate Versionen
+Machen Sie erst verschiedene Exporte um sich mit dem Aufbau der csv Dateien vertraut zu machen.
+Erstellen Sie anhand dieser Vorgaben Ihre eigene csv Datei für einen Import, benennen Sie sie entsprechend und laden sie hoch
+Dann clicken Sie auf Import.
+Wenn Ihre Datei sehr viele Artikel enthält dann können Sie optional auch die Datei splitten.
+In der Konfiguration können Sie angeben, ab wann gesplittet werden soll (Voreingestellt: 2000)
+Das ist sehr konservativ eingestellt. Wenn Sie ein professionelles Webhostingpaket besitzen, dann sollte es kein Problem sein auch 20000 Einträge auf einmal zu importieren.
+
+
+7)
+Export/Import von Attributen
+
+Bitte beachten Sie die folgenden Informationen (english only)
+
+IMPORTING ATTRIBUTES
+Including sample attribute input file.
+
+I am currently able to correctly import basic attributes, and assign 
+the options to an associated product's model. It is possible to create
+multiple sets of Option Names / Option Values and assign to a single 
+product, say "Size" and "Color".
+
+The basic attributes CSV file currently has 4 columns:
+1) v_products_model
+	a) The products model number must already exist, and should be
+	   unique within the store as linked products have not been tested.
+
+2) v_products_option_type
+	a) this is the type of attribute you want to create and should be
+	   a number between 0 - 5 (for a default store or the number associated with your added software) and are defined as follows:
+		0 - Drop Down Box
+		1 - Text Box
+		2 - Radio Button
+		3 - Check Box
+		4 - File Upload
+		5 - Read Only
+		One way to identify the number associated with an additional option type is to navigate to Catalog->Option Names. Once there,
+		note the option type assigned to the product on screen and the list of option types in the dropdown list. Now view the source of
+		the page and search for one of the option types in the list that are not otherwise used on the screen.  The found html option
+		values do/should match the list above and then show any new(er) option type values that can be used by the software.
+		
+	b) for a given option_name (say "Color"), do not change the products_option_type
+	   on subsequent entries, doing so will not give the results you want.
+	c) If you need a "Color" with both a drop down box and check box, you will need
+	   to define two unique Options Names.
+
+3) v_products_options_name_1
+	a) The option name you want to create or use in the language associated with the number at the end.
+	b) It is important to note that Zen Cart will allow you to create
+	   from within the admin two identical Options names, and assign 
+	   unique options values to each. For example:
+		"Color" with "red,green,blue" as one option name/value pair
+		"Color" with "cyan,magenta,yellow" as another option name/value pair.
+	   Internally, Zen Cart knows these are two distinct options names, 
+	   but this info is not available to the user. (It may have been
+	   better to have a unique Options Name, and associated Options Display Name
+	   which in turn could be language specific).
+	c) For this reason, the products_options_name_1 must be unique, meaning
+	   you CAN have "Colors" but the associated options_values set will be
+	   the sum of the example above: { red,green,blue,cyan,magenta,yellow }.  
+	   (This is information in the database. The individual product will still only show
+	   the attributes assigned.)
+	d) It is generally easier to work with and understand the attributes if there
+	   is one option name that has multiple option values associated with it, but 
+	   there is no requirement to setup your site this way.
+	   
+4) v_products_options_values_names_1
+	a) these are the values names that are assigned to the products_options_name
+	b) enter the values_names, delimited with a comma for each value.
+	c) note that ONLY these products_options_values_names will be assigned 
+	   to the given products_model
+
+A way to reproduce attributes in one store from another using EP4:
+
+  If store 1 has a unique model # for each product and the option names are unique (only one instance of the option name in all of the ZC option names), then the import of the attributes_basic file has populated store 2 with all of the attributes of the product from store 1. What is missing though is the detail associated with each attribute. So, to update store 2's attribute details, a file has to be generated such that each of the four primary detailed attributes related keys match an existing entry in the attributes table. So, how to accomplish this?
+
+  Here's what I see. It is possible at this point to export the detailed attributes from both store 1 and store 2. Each of these has text versions of the option names and option values names. The model number is whatever it is and the products_attributes_id is expected to be unique to each store.
+
+  So what I would do would be to sort the data in both detailed lists on three fields in the same "order" (either ascending or descending but make it the same on both spreadsheets) such that sorted by products_model, then option_name, and then option_value_name.
+
+  Then pick the method/location desired, but the goal is to eliminate from the list for store 2 any product that is not in store 1. This would be by a comparison of products_model.
+  For now, also eliminate from store 1 any row that doesn't have a model #. (will have to address that separately because really that product never got uploaded to store 2, but at least the list should be small.)
+
+  Then begin moving entire rows as necessary such that the row in store 1 lines up with the row of store 2 by first comparing option names then option value names. Provided nothing "new" has been done with store 2, these should line up exactly with no editing.
+
+  Then once all have been lined up, copy the primary field data from store 2 over the data of the same field for store 1. Once all four columns are copied, save the file as the csv file to be uploaded and then imported into store 2.
+
+  Obviously through this process you'll want to save a backup of the file(s) to minimize any rework. Keep in mind the filenaming convention needed by the plugin.
+
+  And with that, the new file when uploaded and imported to store 2 should cause store 2 to have the same attributes and details of attributes as store 1.
+
+  Other attribute guidance: Currently the detailed attributes unlike the detailed product information
+  for example are based on the specific database centric field record designations.  Because of this,
+  to properly update the detailed information, one must first upload and import the basic information,
+  then download/export the detailed attribute data and after all of this, the CSV file processed
+   as a new imported file with the updated data to be stored in the database.
+
+8)
+Weitere Informationen (englisch) entnehmen Sie bitte der original-readme-english.txt
